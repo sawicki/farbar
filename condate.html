@@ -1,0 +1,79 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Template Title</title>
+  <meta name="description" content="HTML5 Template">
+  <meta name="author" content="Felix Sawicki">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <style>
+b.right {float: right;}
+.trbot  {
+   position: absolute;
+   right: 20px;
+   bottom: 20px;
+}
+#container
+{
+	margin:          0 auto;
+	width:           800px;
+	position:        relative;
+	background-color: linen;
+	border: 1px solid black;
+	padding: 25px;
+	word-wrap: break-word;
+	overflow: auto;
+	border-radius: 15px;
+	box-shadow: 10px 10px 5px black;
+
+}
+h1 {
+    color: maroon;
+    margin-left: 40px;
+}
+td {width:90px;}
+td.answer {width:150px;}
+table#t01 {
+    border: 1px solid black;
+    border-collapse: collapse;
+	overflow: hidden;
+	float: left;
+
+
+}
+table#t01 tr:nth-child(even) {
+    background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+    background-color: #fff;
+}
+body{
+margin:25px auto 0 auto;
+background-color:  #777;
+}
+h3 {text-align:center;}
+
+
+</style>
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <p>Date: <input type="text" id="datepicker"></p>
+  <script>
+  $(function() {
+    $( "#datepicker" ).datepicker();
+  });
+  </script>
+  <script src="js/scripts.js"></script>
+  <script>// put inline javascript here </script>
+</body>
+</html>
