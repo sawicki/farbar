@@ -5,11 +5,11 @@
 <head>
   <meta charset="utf-8">
 
-  <title>Template Title</title>
+  <title>FAR/BAR Calculations</title>
   <meta name="description" content="HTML5 Template">
   <meta name="author" content="Felix Sawicki">
 
-  <link rel="stylesheet" href="css/styles.css?v=1.0">
+  <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> -->
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <style>
     b.right {
@@ -40,27 +40,34 @@
       margin-left: 40px;
     }
 
-    td {
-      width: 90px;
+    .formLayout,
+    .outForm {
+      background-color: #f3f3f3;
+      border: solid 1px #a1a1a1;
+      padding: 10px;
+      width: 300px;
+      margin: 20px;
     }
 
-    td.answer {
-      width: 150px;
-    }
-
-    table#t01 {
-      border: 1px solid black;
-      border-collapse: collapse;
-      overflow: hidden;
+    .formLayout {
       float: left;
     }
 
-    table#t01 tr:nth-child(even) {
-      background-color: #eee;
+    .formLayout label,
+    .formLayout input {
+      display: block;
+      width: 120px;
+      float: left;
+      margin-bottom: 10px;
     }
 
-    table#t01 tr:nth-child(odd) {
-      background-color: #fff;
+    .formLayout label {
+      text-align: right;
+      padding-right: 20px;
+    }
+
+    br {
+      clear: left;
     }
 
     body {
@@ -83,32 +90,147 @@
 <body>
   <div id=container>
 
-      Test paragraph
-    <p>Start Date:
-      <input type="text" id="datepicker">
+    <h2>Fl FAR/BAR Date Calculator</h2>
+    <!-- <p>Start Date:
+
     </p>
-    <p id="dateUntil">Date Until:
-      <input type="text" id="date2">
+    <input type="radio" name="endDate" value="male">Pick closing date by calendar
+    <br>
+    <input type="radio" name="endDate" value="female">Pick number of days until closing
+    <br> -->
+    <!-- <p id="secDate">Date Until:
+
     </p>
-    <p id="numDays"># of Days:
-      <input type="text" id="date2">
-    </p>
-    <button onclick="myFunction()">Click me</button>
+    <p># of Days:
+
+      <br> -->
+    <button onclick="processForm()">Process form</button>
+    <br>
+
+    <div class="formLayout">
+      <!-- <label>Title</label>
+      <select>
+        <option>Mr.</option>
+        <option>Dr.</option>
+        <option>Ms.</option>
+        <option>Mrs.</option>
+      </select> -->
+      <br>
+      <label>Pick Exec Date</label>
+      <input type="text" id="execDate">
+
+      <label>Pick Close Date</label>
+      <input type="text" id="closeDate">
+
+      <br>
+      <label>Escrow</label>
+      <input id="escrowDays" placeholder="Days to Escrow" value="3">
+      <br>
+      <label>Inspection</label>
+      <input id="inspectDays" placeholder="Days for Inspection" value="15">
+      <br>
+      <label>Appraisel</label>
+      <input id="daysAppraisel" placeholder="Days for Appraisel">
+      <br>
+      <label>Finance</label>
+      <input id="daysFinance" placeholder="Fin Binding (neg numb)">
+      <br>
+      <!-- <label>City</label>
+      <select id="city">
+        <option>New York</option>
+        <option>Chicago</option>
+        <option>etc.</option>
+      </select> -->
+      <br>
+      <label>Other</label>
+      <input id="otherDays">
+      <br>
+    </div>
+    <div class="formLayout">
+      <label>Exec to Close</label>
+      <input type="text" id="numDays">
+      <!-- <label>Contract Executed</label>
+      <input id="execOut" readonly>
+      <label>Closing Date</label>
+      <input id = "closeOut" readonly> -->
+      <label>Escrow</label>
+      <input id="escrowDate" readonly>
+      <label>Inspection</label>
+      <input id=inspectDate readonly>
+      <label>Appraisel</label>
+      <input id=appraiseDate readonly>
+      <label>Finance Period</label>
+      <input id="financeDate" readonly>
+      <label>Other</label>
+      <input id="otherDate1" readonly>
 
 
-
+    </div>
   </div>
   <script>
-    $("#datepicker").datepicker();
-    $("#date2").datepicker();
+    $("#execDate").datepicker();
+    $("#closeDate").datepicker();
 
-    function myFunction() {
-      var date1 = document.getElementById("datepicker").value;
-      var date2 = document.getElementById("date2").value;
-      alert("dates picked are " + date1 + "  and  " + date2)
+    function processForm() {
+      var execDate = document.getElementById("execDate").value;
+      var closeDate = document.getElementById("closeDate").value;
+      // alert("dates picked are " + date1 + "  and  " + closeDate);
+      dateDif();
+
+      // newDate = daystoDate(execDate,document.getElementById("escrowDays").value);
+      // document.getElementById("escrowDate").value = newDate.toDateString();
+      // newDate = daystoDate(execDate,document.getElementById("inspectDays").value);
+      // document.getElementById("inspectDate").value = newDate.toDateString();
+      daystoDate2("execDate", "escrowDays", "escrowDate");
+      daystoDate2("execDate", "inspectDays", "inspectDate");
+      daystoDate2("execDate", "daysAppraisel", "appraiseDate");
+      daystoDate2("closeDate", "daysFinance", "financeDate");
+      daystoDate2("execDate", "otherDays", "otherDate1");
+
+    }
+
+    function dateDif() {
+      var execDate = new Date(document.getElementById("execDate").value);
+      var closeDate = new Date(document.getElementById("closeDate").value);
+      var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+      // var firstDate = new Date(2008,01,12);
+      // var secondDate = new Date(2008,01,22);
+
+      var diffDays = Math.round(Math.abs((closeDate.getTime() - execDate.getTime()) / (oneDay)));
+      document.getElementById("numDays").value = diffDays;
+      // alert(diffDays);
+    }
+
+    function daystoDate(date, days) {
+      // body...
+      var newdate = new Date(date);
+      newdate.setDate(parseInt(newdate.getDate()) + parseInt(days));
+      var nd = new Date(newdate);
+      return nd;
+
+    }
+
+    function daystoDate2(dateField, daysField, outputField) {
+      // body...
+      var newdate = new Date(document.getElementById(dateField).value);
+      var days = document.getElementById(daysField).value;
+      newdate.setDate(parseInt(newdate.getDate()) + parseInt(days));
+      var nd = (new Date(newdate)).toDateString();
+      document.getElementById(outputField).value = nd;
+      var wd = nd.split(/[\s+]/);
+      if(wd[0]=="Sun"||
+         wd[0]=="Sat"){
+        document.getElementById(outputField).style.background = "pink";
+      
+      }
+
+
+
+
+      return nd;
     }
   </script>
-  <script src="js/scripts.js"></script>
+  <!-- <script src="js/scripts.js"></script> -->
   <script>
     // put inline javascript here
   </script>
