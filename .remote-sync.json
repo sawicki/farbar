@@ -1,0 +1,12 @@
+{
+  "transport": "ftp",
+  "uploadOnSave": true,
+  "hostname": "sawicki.org",
+  "port": "21",
+  "target": "/calendar",
+  "ignore": [
+    ".git/**"
+  ],
+  "username": "sawicki",
+  "password": "J123ames!"
+}
