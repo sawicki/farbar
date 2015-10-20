@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
 
-  <title>FAR/BAR Calculations</title>
+  <title>FAR/BAR As Is </title>
   <meta name="description" content="HTML5 Template">
   <meta name="author" content="Felix Sawicki">
 
@@ -24,7 +24,7 @@
 
     #container {
       margin: 0 auto;
-      width: 800px;
+      width: 825px;
       position: relative;
       background-color: linen;
       border: 1px solid black;
@@ -35,9 +35,21 @@
       box-shadow: 10px 10px 5px black;
     }
 
+    button {
+      margin-left: 20px;
+    }
+
     h1 {
       color: maroon;
       margin-left: 40px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    footer {
+      text-align: center;
     }
 
     .formLayout,
@@ -45,7 +57,7 @@
       background-color: #f3f3f3;
       border: solid 1px #a1a1a1;
       padding: 10px;
-      width: 300px;
+      width: 350px;
       margin: 20px;
     }
 
@@ -56,7 +68,7 @@
     .formLayout label,
     .formLayout input {
       display: block;
-      width: 120px;
+      width: 160px;
       float: left;
       margin-bottom: 10px;
     }
@@ -90,7 +102,7 @@
 <body>
   <div id=container>
 
-    <h2>Fl FAR/BAR Date Calculator</h2>
+    <h2>Fl FAR/BAR As Is Date Calculator</h2>
     <!-- <p>Start Date:
 
     </p>
@@ -108,68 +120,81 @@
     <br>
 
     <div class="formLayout">
-      <!-- <label>Title</label>
-      <select>
-        <option>Mr.</option>
-        <option>Dr.</option>
-        <option>Ms.</option>
-        <option>Mrs.</option>
-      </select> -->
+      <!-- <fieldset>
+  <legend>Input:</legend> -->
+      <strong>Input:</strong>
+      <br>
       <br>
       <label>Pick Exec Date</label>
       <input type="text" id="execDate">
 
-      <label>Pick Close Date</label>
+      <label>Pick Close Date - L52</label>
       <input type="text" id="closeDate">
 
       <br>
-      <label>Escrow</label>
+      <label>Escrow Due - L29</label>
       <input id="escrowDays" placeholder="Days to Escrow" value="3">
       <br>
-      <label>Inspection</label>
+      <label>Fin Contingency - L96</label>
+      <input id="daysFinance" placeholder="Fin Contingincy" value="45">
+      <br>
+      <label>Fin application - L101</label>
+      <input id="finApplication" placeholder="Days for Appraisel" value="5">
+      <br>
+      <label>Title Evidence - L147</label>
+      <input id="daysTitleEvid" placeholder="Title Evid" value="-5">
+      <br>
+      <label>Inspect Contin - L247</label>
       <input id="inspectDays" placeholder="Days for Inspection" value="15">
-      <br>
-      <label>Appraisel</label>
-      <input id="daysAppraisel" placeholder="Days for Appraisel">
-      <br>
-      <label>Finance</label>
-      <input id="daysFinance" placeholder="Fin Binding (neg numb)">
-      <br>
-      <!-- <label>City</label>
-      <select id="city">
-        <option>New York</option>
-        <option>Chicago</option>
-        <option>etc.</option>
-      </select> -->
       <br>
       <label>Other</label>
       <input id="otherDays">
       <br>
+      <!-- </fieldset> -->
     </div>
+
+
     <div class="formLayout">
+      <strong>Output:</strong>
+      <br>
+      <br>
       <label>Exec to Close</label>
-      <input type="text" id="numDays">
-      <!-- <label>Contract Executed</label>
+      <input type="text" id="numDays" readonly>
+      <label>Contract Executed</label>
       <input id="execOut" readonly>
       <label>Closing Date</label>
-      <input id = "closeOut" readonly> -->
-      <label>Escrow</label>
+      <input id="closeOut" readonly>
+      <label>Escrow Due</label>
       <input id="escrowDate" readonly>
       <label>Inspection</label>
       <input id=inspectDate readonly>
-      <label>Appraisel</label>
-      <input id=appraiseDate readonly>
-      <label>Finance Period</label>
+      <!-- <label>Appraisel</label>
+      <input id=appraiseDate readonly> -->
+      <label>Finance Contingincy</label>
       <input id="financeDate" readonly>
+      <label>Fin Cont Waived - L112</label>
+      <input id="finConDate" readonly>
+      <label>Title Evidence Due</label>
+      <input id="titleEvidDue" readonly>
       <label>Other</label>
       <input id="otherDate1" readonly>
 
 
     </div>
-  </div>
+    <footer>
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+
   <script>
+    var localAvailable;
     $("#execDate").datepicker();
     $("#closeDate").datepicker();
+    if (typeof(Storage) !== "undefined") {
+      localAvailable = true;
+    } else {
+      localAvailable = false;
+      // set message to indicate not available
+    }
 
     function processForm() {
       var execDate = document.getElementById("execDate").value;
@@ -181,11 +206,35 @@
       // document.getElementById("escrowDate").value = newDate.toDateString();
       // newDate = daystoDate(execDate,document.getElementById("inspectDays").value);
       // document.getElementById("inspectDate").value = newDate.toDateString();
+
+      newDate = (new Date(execDate));
+      document.getElementById("execOut").value = newDate.toDateString();
+      newDate = (new Date(closeDate)).toDateString();
+      document.getElementById("closeOut").value = newDate;
+      var wd = newDate.split(/[\s+]/);
+      if (wd[0] == "Sun" ||
+        wd[0] == "Sat") {
+        document.getElementById("closeOut").style.background = "pink";
+
+      }
+
       daystoDate2("execDate", "escrowDays", "escrowDate");
       daystoDate2("execDate", "inspectDays", "inspectDate");
-      daystoDate2("execDate", "daysAppraisel", "appraiseDate");
-      daystoDate2("closeDate", "daysFinance", "financeDate");
+      // daystoDate2("execDate", "daysAppraisel", "appraiseDate");
+      daystoDate2("execDate", "daysFinance", "financeDate");
+
       daystoDate2("execDate", "otherDays", "otherDate1");
+      daystoDate2("closeDate", "daysTitleEvid", "titleEvidDue");
+
+      newDate = (daystoDate(closeDate, "-7")).toDateString();
+      document.getElementById("finConDate").value = newDate;
+      wd = newDate.split(/[\s+]/);
+      if (wd[0] == "Sun" ||
+        wd[0] == "Sat") {
+        document.getElementById("finConDate").style.background = "pink";
+
+      }
+
 
     }
 
@@ -218,10 +267,10 @@
       var nd = (new Date(newdate)).toDateString();
       document.getElementById(outputField).value = nd;
       var wd = nd.split(/[\s+]/);
-      if(wd[0]=="Sun"||
-         wd[0]=="Sat"){
+      if (wd[0] == "Sun" ||
+        wd[0] == "Sat") {
         document.getElementById(outputField).style.background = "pink";
-      
+
       }
 
 
