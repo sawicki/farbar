@@ -73,6 +73,10 @@
       margin-bottom: 10px;
     }
 
+    .finance {
+      border-top: solid 1px black;
+    }
+
     .formLayout label {
       text-align: right;
       padding-right: 20px;
@@ -126,29 +130,29 @@
       <br>
       <br>
       <label>Pick Exec Date</label>
-      <input type="text" id="execDate">
+      <input type="text" id="inExecFld">
 
       <label>Pick Close Date - L52</label>
-      <input type="text" id="closeDate">
+      <input type="text" id="inCloseFld">
 
       <br>
       <label>Escrow Due - L29</label>
-      <input id="escrowDays" placeholder="Days to Escrow" value="3">
+      <input id="inEscrowFld" placeholder="Days to Escrow" value="3">
       <br>
       <label>Fin Contingency - L96</label>
-      <input id="daysFinance" placeholder="Fin Contingincy" value="45">
+      <input id="inFinConFld" placeholder="Fin Contingincy" value="45">
       <br>
       <label>Fin application - L101</label>
-      <input id="finApplication" placeholder="Days for Appraisel" value="5">
+      <input id="inFinAppFld" placeholder="Days Fin Appliation" value="5">
       <br>
       <label>Title Evidence - L147</label>
-      <input id="daysTitleEvid" placeholder="Title Evid" value="-5">
+      <input id="inTitleFld" placeholder="Title Evid" value="-5">
       <br>
       <label>Inspect Contin - L247</label>
-      <input id="inspectDays" placeholder="Days for Inspection" value="15">
+      <input id="inInspectFld" placeholder="Days for Inspection" value="15">
       <br>
       <label>Other</label>
-      <input id="otherDays">
+      <input id="inOtherFld">
       <br>
       <!-- </fieldset> -->
     </div>
@@ -159,130 +163,166 @@
       <br>
       <br>
       <label>Exec to Close</label>
-      <input type="text" id="numDays" readonly>
+      <input type="text" id="outDaysFld" readonly>
       <label>Contract Executed</label>
-      <input id="execOut" readonly>
+      <input id="outExecFld" readonly>
       <label>Closing Date</label>
-      <input id="closeOut" readonly>
+      <input id="outCloseFld" readonly>
       <label>Escrow Due</label>
-      <input id="escrowDate" readonly>
+      <input id="outEscrowFld" readonly>
       <label>Inspection</label>
-      <input id=inspectDate readonly>
-      <!-- <label>Appraisel</label>
-      <input id=appraiseDate readonly> -->
+      <input id="outInspectFld" readonly>
+      <label>Finance Application</label>
+      <input id="outFinAppFld" readonly>
+
       <label>Finance Contingincy</label>
-      <input id="financeDate" readonly>
+      <input id="outFinConFld" readonly>
       <label>Fin Cont Waived - L112</label>
-      <input id="finConDate" readonly>
+      <input id="outFinWaiveFld" readonly>
+
       <label>Title Evidence Due</label>
-      <input id="titleEvidDue" readonly>
+      <input id="outTitleFld" readonly>
       <label>Other</label>
-      <input id="otherDate1" readonly>
+      <input id="outOtherFld" readonly>
 
 
     </div>
     <footer>
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
+      </a>
+      <br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>
 
-  <script>
-    var localAvailable;
-    $("#execDate").datepicker();
-    $("#closeDate").datepicker();
-    if (typeof(Storage) !== "undefined") {
-      localAvailable = true;
-    } else {
-      localAvailable = false;
-      // set message to indicate not available
-    }
+      <script>
+        var localAvailable;
+        var inExecFld = document.getElementById("inExecFld");
+        var inEscrowFld = document.getElementById("inEscrowFld");
+        var inFinConFld = document.getElementById("inFinConFld");
+        var inFinAppFld = document.getElementById("inFinAppFld");
+        var inTitleFld = document.getElementById("inTitleFld");
+        var inInspectFld = document.getElementById("inInspectFld");
+        var inOtherFld = document.getElementById("inOtherFld");
 
-    function processForm() {
-      var execDate = document.getElementById("execDate").value;
-      var closeDate = document.getElementById("closeDate").value;
-      // alert("dates picked are " + date1 + "  and  " + closeDate);
-      dateDif();
+        var outDaysFld = document.getElementById("outDaysFld");
+        var outExecFld = document.getElementById("outExecFld");
+        var outCloseFld = document.getElementById("outCloseFld");
+        var outEsrowFld = document.getElementById("outEsrowFld");
+        var outInspectFld = document.getElementById("outInspectFld");
+        var outFinAppFld = document.getElementById("outFinAppFld");
+        var outFinConFld = document.getElementById("outFinConFld");
+        var outFinWaiveFld = document.getElementById("outFinWaiveFld");
+        var outTitleFld = document.getElementById("outTitleFld");
+        var outOtherFld = document.getElementById("outOtherFld");
 
-      // newDate = daystoDate(execDate,document.getElementById("escrowDays").value);
-      // document.getElementById("escrowDate").value = newDate.toDateString();
-      // newDate = daystoDate(execDate,document.getElementById("inspectDays").value);
-      // document.getElementById("inspectDate").value = newDate.toDateString();
+        $("#inExecFld").datepicker();
+        $("#inCloseFld").datepicker();
+        if (typeof(Storage) !== "undefined") {
+          localAvailable = true;
+        } else {
+          localAvailable = false;
+          // set message to indicate not available
+        }
 
-      newDate = (new Date(execDate));
-      document.getElementById("execOut").value = newDate.toDateString();
-      newDate = (new Date(closeDate)).toDateString();
-      document.getElementById("closeOut").value = newDate;
-      var wd = newDate.split(/[\s+]/);
-      if (wd[0] == "Sun" ||
-        wd[0] == "Sat") {
-        document.getElementById("closeOut").style.background = "pink";
+        function processForm() {
+          var inExecStr = inExecFld.value;
+          var inCloseStr = inCloseFld.value;
+          var inExecDate = new Date(inExecStr);
+          var inCloseDate = new Date(inCloseStr);
 
-      }
+          // alert("dates picked are " + date1 + "  and  " + inCloseFld);
+          outDaysFld.value = dateDif(inCloseDate, inExecDate);
 
-      daystoDate2("execDate", "escrowDays", "escrowDate");
-      daystoDate2("execDate", "inspectDays", "inspectDate");
-      // daystoDate2("execDate", "daysAppraisel", "appraiseDate");
-      daystoDate2("execDate", "daysFinance", "financeDate");
+          outExecFld.value = inExecDate.toDateString();
+          outCloseFld.value = inCloseDate.toDateString();
+          satSun(inCloseDate.toDateString(), outCloseFld);
+          addDays(inExecStr, inEscrowFld.value, outEscrowFld);
+          addDays(inExecStr, inFinConFld.value, outFinConFld);
+          addDays(inExecStr, inFinAppFld.value, outFinAppFld);
+          addDays(inCloseStr, "-7", outFinWaiveFld);
+          addDays(inExecStr, inInspectFld.value, outInspectFld);
+          addDays(inCloseStr, inTitleFld.value, outTitleFld);
 
-      daystoDate2("execDate", "otherDays", "otherDate1");
-      daystoDate2("closeDate", "daysTitleEvid", "titleEvidDue");
+          addDays(inExecStr, inOtherFld.value, outOtherFld);
+          // var wd = newDate.split(/[\s+]/);
+          // if (wd[0] == "Sun" ||
+          //   wd[0] == "Sat") {
+          //   document.getElementById("outClose").style.background = "pink";
 
-      newDate = (daystoDate(closeDate, "-7")).toDateString();
-      document.getElementById("finConDate").value = newDate;
-      wd = newDate.split(/[\s+]/);
-      if (wd[0] == "Sun" ||
-        wd[0] == "Sat") {
-        document.getElementById("finConDate").style.background = "pink";
-
-      }
+        }
 
 
-    }
 
-    function dateDif() {
-      var execDate = new Date(document.getElementById("execDate").value);
-      var closeDate = new Date(document.getElementById("closeDate").value);
-      var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-      // var firstDate = new Date(2008,01,12);
-      // var secondDate = new Date(2008,01,22);
-
-      var diffDays = Math.round(Math.abs((closeDate.getTime() - execDate.getTime()) / (oneDay)));
-      document.getElementById("numDays").value = diffDays;
-      // alert(diffDays);
-    }
-
-    function daystoDate(date, days) {
-      // body...
-      var newdate = new Date(date);
-      newdate.setDate(parseInt(newdate.getDate()) + parseInt(days));
-      var nd = new Date(newdate);
-      return nd;
-
-    }
-
-    function daystoDate2(dateField, daysField, outputField) {
-      // body...
-      var newdate = new Date(document.getElementById(dateField).value);
-      var days = document.getElementById(daysField).value;
-      newdate.setDate(parseInt(newdate.getDate()) + parseInt(days));
-      var nd = (new Date(newdate)).toDateString();
-      document.getElementById(outputField).value = nd;
-      var wd = nd.split(/[\s+]/);
-      if (wd[0] == "Sun" ||
-        wd[0] == "Sat") {
-        document.getElementById(outputField).style.background = "pink";
-
-      }
+        // newDate = (daystoDate(inClose, "-7")).toDateString();
+        // document.getElementById("outFinWaive").value = newDate;
+        // wd = newDate.split(/[\s+]/);
+        // if (wd[0] == "Sun" ||
+        //   wd[0] == "Sat") {
+        //   document.getElementById("outFinWaive").style.background = "pink";
+        //
+        // }
 
 
 
 
-      return nd;
-    }
-  </script>
-  <!-- <script src="js/scripts.js"></script> -->
-  <script>
-    // put inline javascript here
-  </script>
+        function dateDif(date2, date1) {
+
+          var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+          // var firstDate = new Date(2008,01,12);
+          // var secondDate = new Date(2008,01,22);
+
+          var diffDays = Math.round(Math.abs((date2.getTime() - date1.getTime()) / (oneDay)));
+          return diffDays;
+          // alert(diffDays);
+        }
+
+        function daystoDate(date, days) {
+          // body...
+          var newdate = new Date(date);
+          newdate.setDate(parseInt(newdate.getDate()) + parseInt(days));
+          var nd = new Date(newdate);
+          return nd;
+
+        }
+
+        function addDays(indate, dayString, outPutField) {
+          var newDate = new Date(indate);
+          newDate.setDate(parseInt(newDate.getDate()) + parseInt(dayString));
+          var nd = (new Date(newDate)).toDateString();
+
+          outPutField.value = nd;
+          satSun(nd, outPutField);
+          return;
+
+        }
+
+        // function daystoDate2(dateField, daysField, outputField) {
+        //   // body...
+        //   var newdate = new Date(document.getElementById(dateField).value);
+        //   var days = document.getElementById(daysField).value;
+        //   newdate.setDate(parseInt(newdate.getDate()) + parseInt(days));
+        //
+        //
+        //   }
+
+        function satSun(nd, outField) {
+          // var nd = outField.value;
+          var wd = (nd.split(/[\s+]/))[0];
+          if (wd == "Sun" ||
+            wd == "Sat") {
+            outField.style.background = "pink";
+            return;
+          }
+
+
+
+          return nd;
+        }
+      </script>
+      <!-- <script src="js/scripts.js"></script> -->
+      <script>
+        // put inline javascript here
+      </script>
 </body>
 
 </html>
