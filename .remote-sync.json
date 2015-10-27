@@ -3,7 +3,7 @@
   "uploadOnSave": true,
   "hostname": "sawicki.org",
   "port": "21",
-  "target": "/calendar",
+  "target": "/farbarasis",
   "ignore": [
     ".git/**"
   ],
